@@ -46,7 +46,7 @@ export default function AccommodationForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        let imageUrl = '';
+        // let imageUrl = '';
         if (imageFile) {
         // Upload image
         const imageRef = ref(storage, `images/${imageFile.name}`);
@@ -57,12 +57,12 @@ export default function AccommodationForm() {
             null,
             (error) => console.error(error),
             async () => {
-            imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
             await saveAccommodation(imageUrl);
             }
         );
         } else {
-        await saveAccommodation(imageUrl);
+        await saveAccommodation(formData.imageUrl);
         }
     };
 

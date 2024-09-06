@@ -32,6 +32,11 @@ export default function AccommodationManager() {
     };
 
 
+    const handleEdit = (id) => {
+        navigate(`/admin/accommodations/edit/${id}`);
+    };
+    
+
     const handleAddNewAccommodation = () => {
         navigate('/admin/accommodations/new');
     };
@@ -57,18 +62,22 @@ export default function AccommodationManager() {
                             <img src={acc.image} alt={acc.name} style={{ width: '150px', height: '150px', marginRight: '20px', objectFit: 'cover' }} />
                             <div>
                                 <Typography variant="h6">{acc.name}</Typography>
-                                <Typography variant="body2">Price: ${acc.price}</Typography>
+                                <Typography variant="body2">Price: R{acc.price}</Typography>
                                 <Typography variant="body1">{acc.description}</Typography>
                                 
                                 <Typography variant="body2">Location: {acc.location}</Typography>
                                 <Typography variant="body2">Amenities: {acc.amenities.join(', ')}</Typography>
                                 {/* <Typography variant="body2">Policies: {acc.policies}</Typography> */}
+                                
+                                <Button variant="outlined" color="primary" onClick={() => handleEdit(acc.id)}>
+                                    Edit
+                                </Button>
+                                
+                                
                                 <Button variant="outlined" color="secondary" onClick={() => handleDelete(acc.id)} style={{ marginTop: '10px' }}>
                                     Delete
                                 </Button>
-                                <Button variant="outlined" color="primary" onClick={() => handleUpdateAccommodation(acc.id)} style={{ marginTop: '10px', marginLeft: '10px' }}>
-                                    Update
-                                </Button>
+                                
                             </div>
                         </Paper>
                     </Grid>
