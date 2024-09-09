@@ -23,6 +23,14 @@ export const deleteAccommodation = createAsyncThunk('accommodations/deleteAccomm
     return id;
 });
 
+
+export const updateAvailability = createAsyncThunk('accommodations/updateAvailability', async ({ id, status }) => {
+    const docRef = doc(database, 'accommodations', id);
+    await updateDoc(docRef, { availability: status });
+    return { id, availability: status }; // Return updated data
+});
+
+
 const initialState = {
     accommodations: [],
     status: 'idle',
@@ -55,6 +63,13 @@ const accommodationSlice = createSlice({
         })
         .addCase(deleteAccommodation.fulfilled, (state, action) => {
             state.accommodations = state.accommodations.filter(acc => acc.id !== action.payload);
+        })
+        .addCase(updateAvailability.fulfilled, (state, action) => {
+            const { id, availability } = action.payload;
+            const index = state.accommodations.findIndex(acc => acc.id === id);
+            if (index !== -1) {
+                state.accommodations[index].availability = availability;
+            }
         });
     },
 });
