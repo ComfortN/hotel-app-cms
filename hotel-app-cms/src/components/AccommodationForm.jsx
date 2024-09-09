@@ -105,6 +105,10 @@ export default function AccommodationForm() {
                     <MenuItem value="Pool">Pool</MenuItem>
                     <MenuItem value="Parking">Parking</MenuItem>
                     <MenuItem value="Gym">Gym</MenuItem>
+                    <MenuItem value="Soap & pillow menu">WiFi</MenuItem>
+                    <MenuItem value="Luxury toiletries">Pool</MenuItem>
+                    <MenuItem value="Evening Turndown">Parking</MenuItem>
+                    <MenuItem value="Private balcony">Gym</MenuItem>
                     
                     </Select>
                     <FormHelperText>Select amenities</FormHelperText>
