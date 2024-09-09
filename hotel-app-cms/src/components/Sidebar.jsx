@@ -16,6 +16,9 @@ export default function Sidebar() {
             <ListItem button component={Link} to="/admin/dashboard">
             <ListItemText primary="Dashboard" />
             </ListItem>
+            <ListItem button component={Link} to="/admin/dashboard">
+            <ListItemText primary="Dashboard" />
+            </ListItem>
             <ListItem button component={Link} to="/admin/accommodations">
             <ListItemText primary="Manage Accommodations" />
             </ListItem>

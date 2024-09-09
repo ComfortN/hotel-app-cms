@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Hotel Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+The Hotel Management System is a comprehensive web application designed to manage accommodations, reservations, and user accounts for a hotel. This project includes features for admin authentication, accommodation management, reservation management, and user management. It utilizes React for the frontend, Redux Toolkit for state management, and Firebase for authentication and data storage.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Features
+* Admin Login: Secure login for administrators.
+* Accommodation Management: Add, edit, delete, and update the availability of accommodations.
+* Reservation Management: Approve, reject, or cancel reservations. View reservation details.
+* User Management: Edit user details and block users if needed.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
+* Frontend: React, Material-UI
+* State Management: Redux Toolkit
+* Backend: Firebase (Authentication, Firestore)
+* Routing: React Router
+* State Management: Redux Toolkit
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone the repository:
 
-### `npm run build`
+1. Clone the repository:
+   ```
+    git clone https://github.com/ComfortN/hotel-app-cms.git
+    cd hotel-app-cms
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Install dependencies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+    npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Start App
 
-### `npm run eject`
+```
+    npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Usage
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Admin Login
+* Navigate to the login page at /admin/login.
+* Enter the admin credentials (default: admin@lexestay.com / admin123).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Accommodation Management
+* Access the accommodation manager at /admin/accommodations.
+* Add, edit, delete, or update the availability of accommodations.
 
-## Learn More
+## Reservation Management
+* View and manage reservations at /admin/reservations.
+* Approve, reject, or cancel reservations and view details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## User Management
+* Manage users at /admin/users.
+* Edit user details or block users.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## UI/UX Designs
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### The design
+    https://www.figma.com/design/GFn9GO5osA3TM5GKs4AI46/Hotel-App-design?node-id=0-1&t=a3T6iQDkoXlE4z4T-1
 
-### Analyzing the Bundle Size
+### The Wireframe
+    https://www.figma.com/design/dFWzTddo2tl9GPcwLjjocx/HOTEL-WIREFRAME?node-id=6-160&t=JQe4KXP4wCIrwmx8-1
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### The flows
+    https://www.figma.com/board/DkIeaYJeuqm2ki4n21JY6u/Hotel-App-Flows?node-id=0-1&t=2X5moy4eXfqRHd1c-1 (edited)

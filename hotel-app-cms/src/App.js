@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Container } from '@mui/material';
+import AdminDashboard from './components/AdminDashboard';
+import AccommodationForm from './components/AccommodationForm'
+import ReservationManager from './components/reservationManager';
+import UserManagement from './components/UserManager';
+import Sidebar from './components/Sidebar';
+import AccommodationManager from './components/AccommodationManager';
+import LoginPage from './pages/LoginPage';
+import Layout from './components/Layout';
+import AdminPage from './pages/AdminPage';
+import GalleryManage from './pages/GalleryManage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Container maxWidth="lg">
+            
+            <Routes>
+              <Route path='/' element={<LoginPage />} />
+            <Route path="/admin/dashboard" element={<Layout><AdminDashboard /></Layout>} />
+            <Route path='/admin/accommodations' element={<Layout><AccommodationManager /></Layout>} />
+            <Route path='/admin/accommodations/new' element={<Layout><AccommodationForm /></Layout>} />
+            <Route path="/admin/accommodations/edit/:id" element={<Layout><AccommodationForm /></Layout>} />
+            <Route path="/admin/reservations" element={<Layout><ReservationManager /></Layout>} />
+            <Route path="/admin/users" element={<Layout><UserManagement /></Layout>} />
+            <Route path="/admin/profile" element={<Layout><AdminPage /></Layout>} />
+            <Route path="/admin/gallery" element={<Layout><GalleryManage /></Layout>} />
+            
+            </Routes>
+        </Container>
+        </Router>
   );
 }
 

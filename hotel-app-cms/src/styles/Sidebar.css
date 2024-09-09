@@ -1,0 +1,32 @@
+/* Sidebar.css */
+
+.MuiDrawer-paper {
+    position: fixed; /* Fixes the sidebar in place */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Full height */
+    background-color: #fff; /* Sidebar background color */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+}
+
+.MuiListItem-button {
+    padding: 10px 20px; /* Adjust padding for ListItem */
+}
+
+.MuiListItemText-primary {
+    font-weight: 500; /* Adjust font weight for better readability */
+}
+
+
+
+/* On smaller screens, make the sidebar responsive */
+@media (max-width: 768px) {
+    .MuiDrawer-paper {
+        width: 100%; /* Full width on small screens */
+        height: auto; /* Height auto-adjusted */
+    }
+
+    main {
+        margin-left: 0; /* Reset margin */
+    }
+}
