@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { auth } from '../firebase/firebase';
+import { auth, database } from '../firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const initialState = {
     user: null,
     status: 'idle',
     error: null,
 };
-
 
 const defaultAdminEmail = 'admin@lexestay.com';
 const defaultAdminPassword = 'admin123';
@@ -17,24 +17,51 @@ export const loginUser = createAsyncThunk(
     async ({ email, password }) => {
         if (email === defaultAdminEmail && password === defaultAdminPassword) {
             // Simulate successful login for default admin
-            return { email, uid: 'admin123' };
+            const user = { email, uid: 'admin123' };
+            // Ensure the admin document is set up in Firestore
+            const adminDocRef = doc(database, 'admins', user.uid);
+            const adminDoc = await getDoc(adminDocRef);
+            if (!adminDoc.exists()) {
+                await setDoc(adminDocRef, {
+                    firstName: 'Default',
+                    lastName: 'Admin',
+                    email: user.email,
+                    profileImageUrl: '',
+                });
+            }
+            return user;
         } else {
             try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            return userCredential.user;
+                // Perform Firebase authentication
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Ensure the admin document is set up in Firestore
+                const adminDocRef = doc(database, 'admins', user.uid);
+                const adminDoc = await getDoc(adminDocRef);
+                if (!adminDoc.exists()) {
+                    await setDoc(adminDocRef, {
+                        firstName: 'Default',
+                        lastName: 'Admin',
+                        email: user.email,
+                        profileImageUrl: '',
+                    });
+                }
+                
+                return user;
             } catch (error) {
-            throw new Error(error.message);
+                throw new Error(error.message);
             }
         }
-        }
-    );
+    }
+);
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         logoutUser(state) {
-        state.user = null;
+            state.user = null;
         },
     },
     extraReducers: (builder) => {
