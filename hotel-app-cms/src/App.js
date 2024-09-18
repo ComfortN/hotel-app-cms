@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import Layout from './components/Layout';
 import AdminPage from './pages/AdminPage';
 import GalleryManage from './pages/GalleryManage';
+import ReviewsManager from './components/ReviewsManager';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/admin/users" element={<Layout><UserManagement /></Layout>} />
             <Route path="/admin/profile" element={<Layout><AdminPage /></Layout>} />
             <Route path="/admin/gallery" element={<Layout><GalleryManage /></Layout>} />
+            <Route path='/admin/reviews' element={<Layout><ReviewsManager /></Layout>} />
             
             </Routes>
         </Container>
