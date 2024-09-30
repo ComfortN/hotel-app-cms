@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, Typography, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Typography, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers, updateUser, blockUser } from '../redux/userSlice';
-
 
 export default function UserManager() {
     const dispatch = useDispatch();
@@ -14,13 +13,11 @@ export default function UserManager() {
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [editUser, setEditUser] = useState({ firstName: '', lastName: '', email: '', phone: '', address: '' });
 
-
     useEffect(() => {
         if (userStatus === 'idle') {
             dispatch(fetchUsers());
         }
     }, [userStatus, dispatch]);
-
 
     const handleOpenEditDialog = (user) => {
         setSelectedUser(user);
@@ -53,50 +50,92 @@ export default function UserManager() {
 
     return (
         <Box>
-        {userStatus === 'loading' && <Typography>Loading...</Typography>}
-        {userStatus === 'failed' && <Typography>Error: {error}</Typography>}
-        {userStatus === 'succeeded' && users.map((user) => (
-            <Card key={user.id} sx={{ mb: 2 }}>
-                <CardContent>
-                    <Typography variant="h6">User ID: {user.id}</Typography>
-                    <Typography>Name: {user.firstName} {user.lastName}</Typography>
-                    <Typography>Email: {user.email}</Typography>
-                    <Typography>Phone: {user.phone}</Typography>
-                    <Typography>Address: {user.address}</Typography>
-                    <Typography>Favorites: {user.favorites}</Typography>
+            {userStatus === 'loading' && <Typography>Loading...</Typography>}
+            {userStatus === 'failed' && <Typography>Error: {error}</Typography>}
+            {userStatus === 'succeeded' && (
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>User ID</TableCell>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>First Name</TableCell>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Last Name</TableCell>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Email</TableCell>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Phone</TableCell>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Address</TableCell>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Favorites</TableCell>
+                                <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {users.map((user) => (
+                                <TableRow key={user.id}>
+                                    <TableCell>{user.id}</TableCell>
+                                    <TableCell>{user.firstName}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{user.phone}</TableCell>
+                                    <TableCell>{user.address}</TableCell>
+                                    <TableCell>{user.favorites || 'N/A'}</TableCell>
+                                    <TableCell>
+                                        <Button variant="outlined" color="primary" onClick={() => handleOpenEditDialog(user)} sx={{ mr: 1 }}>
+                                            Edit
+                                        </Button>
+                                        <Button variant="outlined" color="secondary" onClick={() => handleBlockUser(user.id)}>
+                                            Block
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
 
-                    <Button variant="outlined" color="primary" onClick={() => handleOpenEditDialog(user)} sx={{ mr: 1 }}>
-                        Edit
-                    </Button>
-                    <Button variant="outlined" color="secondary" onClick={() => handleBlockUser(user.id)}>
-                        Block
-                    </Button>
-                </CardContent>
-            </Card>
-        ))}
-
-<Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+            {/* Edit User Dialog */}
+            <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
                 <DialogTitle>Edit User</DialogTitle>
                 <DialogContent>
                     <TextField
-                        label="First Name" name="firstName" value={editUser.firstName}
-                        onChange={handleEditChange} fullWidth margin="normal"
+                        label="First Name"
+                        name="firstName"
+                        value={editUser.firstName}
+                        onChange={handleEditChange}
+                        fullWidth
+                        margin="normal"
                     />
                     <TextField
-                        label="Last Name" name="lastName" value={editUser.lastName} onChange={handleEditChange}
-                        fullWidth margin="normal"
+                        label="Last Name"
+                        name="lastName"
+                        value={editUser.lastName}
+                        onChange={handleEditChange}
+                        fullWidth
+                        margin="normal"
                     />
                     <TextField
-                        label="Email" name="email" type="email" value={editUser.email} onChange={handleEditChange}
-                        fullWidth margin="normal"
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={editUser.email}
+                        onChange={handleEditChange}
+                        fullWidth
+                        margin="normal"
                     />
                     <TextField
-                        label="Phone" name="phone" value={editUser.phone} onChange={handleEditChange}
-                        fullWidth margin="normal"
+                        label="Phone"
+                        name="phone"
+                        value={editUser.phone}
+                        onChange={handleEditChange}
+                        fullWidth
+                        margin="normal"
                     />
                     <TextField
-                        label="Address" name="address" value={editUser.address} onChange={handleEditChange}
-                        fullWidth margin="normal"
+                        label="Address"
+                        name="address"
+                        value={editUser.address}
+                        onChange={handleEditChange}
+                        fullWidth
+                        margin="normal"
                     />
                 </DialogContent>
                 <DialogActions>
@@ -104,6 +143,6 @@ export default function UserManager() {
                     <Button onClick={handleSaveEdit} variant="contained" color="primary">Save</Button>
                 </DialogActions>
             </Dialog>
-    </Box>
-    )
+        </Box>
+    );
 }

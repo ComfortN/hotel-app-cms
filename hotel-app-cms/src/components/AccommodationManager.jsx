@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAccommodations, deleteAccommodation, updateAvailability  } from '../redux/accommodationSlice';
-import { Container, Typography, Button, Paper, Grid } from '@mui/material';
+import { fetchAccommodations, deleteAccommodation, updateAvailability} from '../redux/accommodationSlice';
+import { Container, Typography, Button, Table, TableBody, TableCell, TableHead, IconButton, TableRow, TableContainer, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Edit, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
 
 export default function AccommodationManager() {
     const dispatch = useDispatch();
@@ -11,10 +11,11 @@ export default function AccommodationManager() {
     const accommodations = useSelector((state) => state.accommodations?.accommodations || []);
     const status = useSelector((state) => state.accommodations.status || 'idle');
     const [open, setOpen] = useState(false);
+    const [selectedAccommodation, setSelectedAccommodation] = useState(null); // State to track selected accommodation
 
     useEffect(() => {
         if (status === 'idle') {
-        dispatch(fetchAccommodations());
+            dispatch(fetchAccommodations());
         }
     }, [status, dispatch]);
 
@@ -22,29 +23,23 @@ export default function AccommodationManager() {
         dispatch(deleteAccommodation(id));
     };
 
-
-    const handleOpen = () => {
+    const handleOpen = (accommodation) => {
+        setSelectedAccommodation(accommodation);
         setOpen(true);
     };
-        
+
     const handleClose = () => {
         setOpen(false);
+        setSelectedAccommodation(null); // Clear selected accommodation
     };
-
 
     const handleEdit = (id) => {
         navigate(`/admin/accommodations/edit/${id}`);
     };
-    
 
     const handleAddNewAccommodation = () => {
         navigate('/admin/accommodations/new');
     };
-
-    const handleUpdateAccommodation = (id) => {
-        navigate(`/admin/accommodations/${id}`);
-    };
-
 
     const handleUpdateAvailability = (id, currentStatus) => {
         const newStatus = currentStatus === 'available' ? 'booked' : 'available';
@@ -57,47 +52,94 @@ export default function AccommodationManager() {
                 Manage Accommodations
             </Typography>
             <Button
-                variant="contained" color="primary" style={{ marginBottom: '20px' }} onClick={handleAddNewAccommodation}
+                variant="contained"
+                color="primary"
+                style={{ marginBottom: '20px' }}
+                onClick={handleAddNewAccommodation}
+                sx={{background: '#2F343B'}}
             >
                 Add New Accommodation
             </Button>
-            <Grid container spacing={3}>
-                {accommodations.map((acc) => (
-                    <Grid item key={acc.id} xs={12}>
-                        <Paper style={{ padding: '20px', display: 'flex', alignItems: 'center' }}>
-                            <img src={acc.image} alt={acc.name} style={{ width: '150px', height: '150px', marginRight: '20px', objectFit: 'cover' }} />
-                            <div>
-                                <Typography variant="h6">{acc.name}</Typography>
-                                <Typography variant="body2">Price: R{acc.price}</Typography>
-                                <Typography variant="body1">{acc.description}</Typography>
-                                
-                                <Typography variant="body2">Location: {acc.location}</Typography>
-                                <Typography variant="body2">Amenities: {acc.amenities.join(', ')}</Typography>
-                                {/* <Typography variant="body2">Policies: {acc.policies}</Typography> */}
-                                
-                                <Button variant="outlined" color="primary" sx={{ mr: 1 }} onClick={() => handleEdit(acc.id)}>
-                                    Edit
-                                </Button>
-                                
-                                
-                                <Button variant="outlined" color="secondary"  sx={{ mr: 1 }} onClick={() => handleDelete(acc.id)} >
-                                    Delete
-                                </Button>
 
-                                <Button
-                                    variant="outlined"
-                                    color={acc.availability === 'available' ? 'success' : 'warning'}
-                                    onClick={() => handleUpdateAvailability(acc.id, acc.availability)}
-                                    style={{ marginTop: '10px', marginLeft: '10px' }}
-                                >
-                                    {acc.availability === 'available' ? 'Mark as Booked' : 'Mark as Available'}
-                                </Button>
-                                
-                            </div>
-                        </Paper>
-                    </Grid>
-                ))}
-            </Grid>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Image</TableCell>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Name</TableCell>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Price</TableCell>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Description</TableCell>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Location</TableCell>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Amenities</TableCell>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Actions</TableCell>
+                            <TableCell sx={{backgroundColor: '#2F343B', color: '#FFFFFF', border: '1px solid #ddd', fontWeight: 'bold', }}>Availability</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {accommodations.map((acc) => (
+                            <TableRow key={acc.id}>
+                                <TableCell>
+                                    <img src={acc.image} alt={acc.name} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+                                </TableCell>
+                                <TableCell>{acc.name}</TableCell>
+                                <TableCell>R{acc.price}</TableCell>
+                                <TableCell>
+                                    {acc.description.length > 100 ? (
+                                        <>
+                                            {acc.description.substring(0, 10)}...
+                                            <Button variant="text" color="primary" onClick={() => handleOpen(acc)}>
+                                                Read More
+                                            </Button>
+                                        </>
+                                    ) : acc.description}
+                                </TableCell>
+                                <TableCell>{acc.location}</TableCell>
+                                <TableCell>{acc.amenities.join(', ')}</TableCell>
+                                <TableCell>
+                                <IconButton color="primary" onClick={() => handleEdit(acc.id)}>
+                                        <Edit sx={{color: '#2F343B'}}/>
+                                    </IconButton>
+                                    <IconButton color="secondary" onClick={() => handleDelete(acc.id)}>
+                                        <Delete sx={{color: '#2F343B'}}/>
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant="outlined"
+                                        color={acc.availability === 'available' ? 'success' : 'warning'}
+                                        onClick={() => handleUpdateAvailability(acc.id, acc.availability)}
+                                    >
+                                        {acc.availability === 'available' ? 'Mark as Booked' : 'Mark as Available'}
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            {/* Dialog for accommodation details */}
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>{selectedAccommodation?.name}</DialogTitle>
+                <DialogContent>
+                    <img
+                        src={selectedAccommodation?.image}
+                        alt={selectedAccommodation?.name}
+                        style={{ width: '60%', height: 'auto', marginBottom: '20px' }}
+                    />
+                    <DialogContentText>
+                        <strong>Price:</strong> R{selectedAccommodation?.price} <br />
+                        <strong>Description:</strong> {selectedAccommodation?.description} <br />
+                        <strong>Location:</strong> {selectedAccommodation?.location} <br />
+                        <strong>Amenities:</strong> {selectedAccommodation?.amenities.join(', ')}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
-    )
+    );
 }
