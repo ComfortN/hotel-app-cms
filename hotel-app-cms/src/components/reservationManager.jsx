@@ -19,8 +19,11 @@ export default function ReservationManager() {
         }
     }, [status, dispatch]);
 
-    const handleApprove = (id) => {
-        dispatch(updateReservation({ id, updatedReservation: { status: 'approved' } }));
+    const handleApprove = (reservation) => {
+        dispatch(updateReservation({ 
+            id: reservation.id,
+            updatedReservation: { ...reservation, status: 'approved' } 
+        }));
     };
 
     const handleOpenRejectDialog = (id) => {
@@ -38,7 +41,11 @@ export default function ReservationManager() {
         if (rejectionReason.trim() === '') {
             return;
         }
-        dispatch(updateReservation({ id: selectedReservationId, updatedReservation: { status: 'rejected', rejectionReason } }));
+        const reservation = reservations.find(r => r.id === selectedReservationId);
+        dispatch(updateReservation({ 
+            id: selectedReservationId, 
+            updatedReservation: { ...reservation, status: 'rejected', rejectionReason } 
+        }));
         handleCloseRejectDialog();
     };
 
@@ -71,7 +78,7 @@ export default function ReservationManager() {
                                 <TableRow key={reservation.id}>
                                     <TableCell>{reservation.id}</TableCell>
                                     <TableCell>
-                                        {reservation.cartItems[0]?.image && (
+                                        {reservation.cartItems && reservation.cartItems[0]?.image && (
                                             <img
                                                 src={reservation.cartItems[0]?.image}
                                                 alt={reservation.cartItems[0]?.name}
@@ -79,20 +86,24 @@ export default function ReservationManager() {
                                             />
                                         )}
                                     </TableCell>
-                                    <TableCell>{reservation.cartItems[0]?.name || 'N/A'}</TableCell>
+                                    <TableCell>{reservation.cartItems && reservation.cartItems[0]?.name || 'N/A'}</TableCell>
                                     <TableCell>{reservation.checkInDate}</TableCell>
                                     <TableCell>{reservation.checkOutDate}</TableCell>
                                     <TableCell>{reservation.firstName} {reservation.lastName}</TableCell>
-                                    <TableCell>{reservation.status}</TableCell>
-                                    <TableCell>${reservation.cartItems[0]?.price || '0'}</TableCell>
+                                    <TableCell>{reservation.status || 'pending'}</TableCell>
+                                    <TableCell>R{reservation.totalAmount || '0'}</TableCell>
                                     <TableCell>
-                                        <Button onClick={() => handleApprove(reservation.id)} variant="contained" color="primary" sx={{ mr: 1 }}>
-                                            Approve
-                                        </Button>
-                                        <Button onClick={() => handleOpenRejectDialog(reservation.id)} variant="contained" color="secondary" sx={{ mr: 1 }}>
-                                            Reject
-                                        </Button>
-                                        <Button onClick={() => handleCancel(reservation.id)} variant="contained" color="secondary">
+                                        {(!reservation.status || reservation.status === 'pending') && (
+                                            <>
+                                                <Button onClick={() => handleApprove(reservation)} variant="contained" sx={{ mb: 1, backgroundColor: '#2F343B', color: '#FFFFFF' }}>
+                                                    Approve
+                                                </Button>
+                                                <Button onClick={() => handleOpenRejectDialog(reservation.id)} variant="contained" sx={{ mb: 1, backgroundColor: '#2F343B', color: '#FFFFFF' }}>
+                                                    Reject
+                                                </Button>
+                                            </>
+                                        )}
+                                        <Button onClick={() => handleCancel(reservation.id)} variant="contained">
                                             Cancel
                                         </Button>
                                     </TableCell>
@@ -105,20 +116,12 @@ export default function ReservationManager() {
                 <Typography>No reservations available.</Typography>
             )}
 
-            {/* Reject Dialog */}
             <Dialog open={open} onClose={handleCloseRejectDialog}>
                 <DialogTitle>Reject Reservation</DialogTitle>
                 <DialogContent>
                     <TextField
-                        autoFocus
-                        margin="dense"
-                        id="reason"
-                        label="Reason for Rejection"
-                        type="text"
-                        fullWidth
-                        variant="outlined"
-                        value={rejectionReason}
-                        onChange={(e) => setRejectionReason(e.target.value)}
+                        autoFocus margin="dense" id="reason" label="Reason for Rejection" type="text" fullWidth
+                        variant="outlined" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
