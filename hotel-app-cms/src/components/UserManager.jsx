@@ -50,6 +50,9 @@ export default function UserManager() {
 
     return (
         <Box>
+            <Typography variant="h5" gutterBottom>
+                Manage Users
+            </Typography>
             {userStatus === 'loading' && <Typography>Loading...</Typography>}
             {userStatus === 'failed' && <Typography>Error: {error}</Typography>}
             {userStatus === 'succeeded' && (
@@ -78,10 +81,10 @@ export default function UserManager() {
                                     <TableCell>{user.address}</TableCell>
                                     <TableCell>{user.favorites || 'N/A'}</TableCell>
                                     <TableCell>
-                                        <Button variant="outlined" color="primary" onClick={() => handleOpenEditDialog(user)} sx={{ mr: 1 }}>
+                                        <Button variant="outlined" onClick={() => handleOpenEditDialog(user)} sx={{ mr: 1, backgroundColor: '#2F343B', color: '#FFFFFF' }}>
                                             Edit
                                         </Button>
-                                        <Button variant="outlined" color="secondary" onClick={() => handleBlockUser(user.id)}>
+                                        <Button variant="outlined" onClick={() => handleBlockUser(user.id)} sx={{backgroundColor: '#2F343B', color: '#FFFFFF'}}>
                                             Block
                                         </Button>
                                     </TableCell>
@@ -97,50 +100,24 @@ export default function UserManager() {
                 <DialogTitle>Edit User</DialogTitle>
                 <DialogContent>
                     <TextField
-                        label="First Name"
-                        name="firstName"
-                        value={editUser.firstName}
-                        onChange={handleEditChange}
-                        fullWidth
-                        margin="normal"
-                    />
+                        label="First Name" name="firstName" value={editUser.firstName} onChange={handleEditChange}
+                        fullWidth margin="normal" />
                     <TextField
-                        label="Last Name"
-                        name="lastName"
-                        value={editUser.lastName}
-                        onChange={handleEditChange}
-                        fullWidth
-                        margin="normal"
-                    />
+                        label="Last Name"  name="lastName" value={editUser.lastName} onChange={handleEditChange}
+                        fullWidth margin="normal" />
                     <TextField
-                        label="Email"
-                        name="email"
-                        type="email"
-                        value={editUser.email}
-                        onChange={handleEditChange}
-                        fullWidth
-                        margin="normal"
-                    />
+                        label="Email" name="email" type="email" value={editUser.email} onChange={handleEditChange}
+                        fullWidth margin="normal" />
                     <TextField
-                        label="Phone"
-                        name="phone"
-                        value={editUser.phone}
-                        onChange={handleEditChange}
-                        fullWidth
-                        margin="normal"
-                    />
+                        label="Phone" name="phone" value={editUser.phone} onChange={handleEditChange}
+                        fullWidth margin="normal" />
                     <TextField
-                        label="Address"
-                        name="address"
-                        value={editUser.address}
-                        onChange={handleEditChange}
-                        fullWidth
-                        margin="normal"
-                    />
+                        label="Address" name="address" value={editUser.address} onChange={handleEditChange}
+                        fullWidth  margin="normal" />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseEditDialog}>Cancel</Button>
-                    <Button onClick={handleSaveEdit} variant="contained" color="primary">Save</Button>
+                    <Button onClick={handleSaveEdit} variant="contained" sx={{backgroundColor: '#2F343B', color: '#FFFFFF'}}>Save</Button>
                 </DialogActions>
             </Dialog>
         </Box>

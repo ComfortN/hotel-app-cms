@@ -123,14 +123,11 @@ export default function AccommodationForm() {
                     <input type="file" onChange={handleImageChange} />
                 </Grid>
                 <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" sx={{mr: 2,backgroundColor: '#2F343B', color: '#FFFFFF'}}>
                     {id ? 'Update Accommodation' : 'Add Accommodation'}
                 </Button>
                 <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => navigate('/admin/accommodations')}
-                >
+                    variant="outlined" onClick={() => navigate('/admin/accommodations')} sx={{backgroundColor: '#2F343B', color: '#FFFFFF'}}>
                     Cancel
                 </Button>
                 </Grid>
