@@ -17,6 +17,9 @@ export default function ReviewsManager() {
 
     return (
         <Box>
+            <Typography variant="h5" gutterBottom>
+                Manage Reviews
+            </Typography>
             {status === 'loading' && <CircularProgress />}
             {status === 'failed' && <Alert severity="error">{error}</Alert>}
             {status === 'succeeded' && reviews.length > 0 ? (
