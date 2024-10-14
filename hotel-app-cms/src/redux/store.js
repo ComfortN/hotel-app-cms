@@ -4,6 +4,7 @@ import reservationReducer from './reservationSlice';
 import userReducer from './userSlice';
 import authReducer from './authSlice';
 import reviewsReducer from './reviewsSlice';
+import { notificationReducer } from './notificationReducer';
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         users: userReducer,
         auth: authReducer,
         reviews: reviewsReducer,
+        notifications: notificationReducer,
     },
 });
 

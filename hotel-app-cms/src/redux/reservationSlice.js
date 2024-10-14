@@ -73,6 +73,7 @@ export const updateReservation = createAsyncThunk(
 
             await updateDoc(reservationRef, updateData);
             console.log('Update successful');
+
             return { id, ...updatedReservation };
         } catch (error) {
             console.error('Error updating reservation:', error);
