@@ -14,7 +14,7 @@ The Hotel Management System is a comprehensive web application designed to manag
 ## Technologies Used
 * Frontend: React, Material-UI
 * State Management: Redux Toolkit
-* Backend: Firebase (Authentication, Firestore)
+* Backend: Firebase (Authentication, Firestore), Node.js (Nodemailer to send emails)
 * Routing: React Router
 * State Management: Redux Toolkit
 
@@ -41,6 +41,24 @@ Clone the repository:
     npm start
 ```
 
+4. Backend
+   
+```
+	cd backend
+```
+
+5. Install dependencies
+
+```
+    npm install
+```
+
+6. Start server
+
+```
+    node server
+```
+
 
 ## Usage
 
@@ -55,6 +73,7 @@ Clone the repository:
 ## Reservation Management
 * View and manage reservations at /admin/reservations.
 * Approve, reject, or cancel reservations and view details.
+* sends email with the status change.
 
 ## User Management
 * Manage users at /admin/users.
