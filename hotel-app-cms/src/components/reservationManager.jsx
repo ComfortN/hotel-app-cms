@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Alert, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReservations, deleteReservation, updateReservation } from '../redux/reservationSlice';
+import axios from 'axios';
 
 export default function ReservationManager() {
     const dispatch = useDispatch();
@@ -19,11 +20,23 @@ export default function ReservationManager() {
         }
     }, [status, dispatch]);
 
+
+    const sendBookingStatusEmail = async (reservation) => {
+        try {
+            await axios.post('http://localhost:3001/send-booking-email', reservation);
+            console.log('Email sent successfully');
+        } catch (error) {
+            console.error('Error sending email:', error);
+        }
+    };
+
     const handleApprove = (reservation) => {
+        const updatedReservation = { ...reservation, status: 'approved' };
         dispatch(updateReservation({ 
             id: reservation.id,
-            updatedReservation: { ...reservation, status: 'approved' } 
+            updatedReservation
         }));
+        sendBookingStatusEmail(updatedReservation);
     };
 
     const handleOpenRejectDialog = (id) => {
@@ -42,10 +55,12 @@ export default function ReservationManager() {
             return;
         }
         const reservation = reservations.find(r => r.id === selectedReservationId);
+        const updatedReservation = { ...reservation, status: 'rejected', rejectionReason };
         dispatch(updateReservation({ 
             id: selectedReservationId, 
-            updatedReservation: { ...reservation, status: 'rejected', rejectionReason } 
+            updatedReservation
         }));
+        sendBookingStatusEmail(updatedReservation);
         handleCloseRejectDialog();
     };
 
