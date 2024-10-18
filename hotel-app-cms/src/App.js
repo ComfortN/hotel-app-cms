@@ -16,7 +16,7 @@ import ReviewsManager from './components/ReviewsManager';
 function App() {
   return (
     <Router>
-        <Container maxWidth="lg">
+        <Container sx={{padding: 0}}>
             
             <Routes>
               <Route path='/' element={<LoginPage />} />
